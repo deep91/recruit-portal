@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup,FormControl,FormBuilder, Validators} from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { User } from '../user';
- 
+
 
 @Component({
   selector: 'app-sign-up',
@@ -11,31 +11,29 @@ import { User } from '../user';
 })
 export class SignUpComponent implements OnInit {
 
-  user :User = new User;
-  signUpForm:FormGroup;
+  user: User = new User;
+  signUpForm: FormGroup;
 
-  firstName:string='';
-  lastName:string='';
-  email:string='';
+  first_name: string = '';
+  last_name: string = '';
 
-  constructor(private fb :FormBuilder,private userService:UserService) { 
-    this.signUpForm= fb.group(
+  constructor(private fb: FormBuilder, private userService: UserService) {
+    this.signUpForm = fb.group(
       {
-      'firstName':[null],
-      'lastName':[null],
-      'email':[null,Validators.email]
+        'first_name': [null],
+        'last_name': [null]
       }
     );
   }
 
 
-  onFormSubmit()
-  {
-       
-    this.user =this.signUpForm.value;
-    console.log(this.user);
-    this.userService.createUser(this.user)
-    
+  onFormSubmit() {
+
+    this.user = this.signUpForm.value;
+    this.userService.createUser(this.user).subscribe((u) => {
+    },
+      (error) => console.log('Api returning error' + error));
+
   }
   ngOnInit() {
   }
